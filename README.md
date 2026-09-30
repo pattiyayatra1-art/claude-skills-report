@@ -13,7 +13,7 @@
 ใน Claude Code พิมพ์:
 
 ```
-/plugin marketplace add <ชื่อผู้ใช้ GitHub>/claude-skills-report
+/plugin marketplace add pattiyayatra1-art/claude-skills-report
 /plugin install thai-academic-skills@pattiyayatra-skills
 ```
 
