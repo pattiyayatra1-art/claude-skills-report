@@ -1,0 +1,13 @@
+{
+  "name": "pattiyayatra-skills",
+  "owner": {
+    "name": "pattiyayatra1"
+  },
+  "plugins": [
+    {
+      "name": "thai-academic-skills",
+      "source": "./",
+      "description": "Thai academic research report writing skills for Claude Code"
+    }
+  ]
+}
