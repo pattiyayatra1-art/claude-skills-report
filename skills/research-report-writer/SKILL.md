@@ -44,6 +44,12 @@ If a dependency skill isn't installed, say which one is missing and continue wit
 closest built-in approach rather than stopping.
 
 Reference files in this skill (read when the step says so):
+- `references/user-academic-writing-style.md` — the user's preferred academic writing
+  and formatting model, learned from their MIDTERM Word/PDF example. Read before
+  outlining or drafting reports for this user; scale its structure to the assignment.
+- `references/model-build-pipeline.md` — **how to build** that approved layout with
+  Microsoft Word (scripts, template, QA). Use it in Step 6 for this user.
+- `references/word-tag-format.md` — tag reference for `scripts/build_research_docx.ps1`
 - `references/thai-academic-format.md` — page setup, fonts, heading levels, Thai
   numbering conventions, front matter
 - `references/citation-styles.md` — APA 7 / IEEE / Vancouver patterns, Thai vs.
@@ -169,7 +175,14 @@ Read `references/citation-styles.md` before writing citations.
 
 ## Step 6 — Build the `.docx`
 
-Load the `docx` skill and follow it end to end (docx-js build, gotchas, page setup,
+**Default for this user (Windows with Microsoft Word):** follow
+`references/model-build-pipeline.md` — fill `assets/template_model.txt`, run
+`scripts/build_research_docx.ps1` then `scripts/modelfmt.ps1`. This reproduces the
+user-approved model layout (RMUTP seal cover, ก ข ค front matter, navy-header tables,
+Thai/English reference groups). Use the docx-js route below only when Word is not
+available, and tell the user the layout will differ.
+
+**Fallback (no Word):** load the `docx` skill and follow it end to end (docx-js build, gotchas, page setup,
 verification-by-render). Read `references/thai-academic-format.md` for the page and
 font defaults. On top of the base skill:
 
