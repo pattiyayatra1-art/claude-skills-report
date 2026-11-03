@@ -47,6 +47,21 @@ repo นี้เป็น private ต้องล็อกอิน GitHub ใ�
 - `design:research-synthesis` — วิเคราะห์ข้อมูลสัมภาษณ์
 - `design:user-research` — ออกแบบการวิจัย
 
+## ปลั๊กอินตัดต่อวิดีโอ (ฟรี)
+
+ปลั๊กอิน `video-editing` ติดตั้ง MCP [Kinocut](https://github.com/KyaniteLabs/kinocut) ซึ่งเป็นโอเพนซอร์ส (Apache-2.0) ทำงานบนเครื่องด้วย FFmpeg ไม่ต้องสมัครบัญชีหรือใช้ API key ใช้ตัด รวมคลิป ใส่ซับไตเติล และปรับเสียง/สี
+
+ต้องมีในเครื่อง: [uv](https://docs.astral.sh/uv/) และ FFmpeg (รวม ffprobe)
+
+```
+/plugin marketplace update pattiyayatra-skills
+/plugin install video-editing@pattiyayatra-skills
+```
+
+ตรวจความพร้อมด้วย `uvx kinocut==1.16.5 doctor` (เปิดครั้งแรกจะดาวน์โหลดแพ็กเกจจาก PyPI)
+
+ใช้ได้ใน Claude Code และ Claude Desktop เท่านั้น เพราะเป็น MCP ที่รันบนเครื่อง จึงใช้ในหน้าเว็บ claude.ai ไม่ได้
+
 ## โครงสร้าง
 
 ```

@@ -8,6 +8,11 @@
       "name": "thai-academic-skills",
       "source": "./",
       "description": "Thai academic research report writing skills for Claude Code"
+    },
+    {
+      "name": "video-editing",
+      "source": "./plugins/video-editing",
+      "description": "Free local video editing (Kinocut MCP: trim, merge, subtitles, audio) — needs uv + FFmpeg"
     }
   ]
 }
