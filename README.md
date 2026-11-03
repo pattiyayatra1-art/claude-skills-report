@@ -62,6 +62,18 @@ repo นี้เป็น private ต้องล็อกอิน GitHub ใ�
 
 ใช้ได้ใน Claude Code และ Claude Desktop เท่านั้น เพราะเป็น MCP ที่รันบนเครื่อง จึงใช้ในหน้าเว็บ claude.ai ไม่ได้
 
+### ใช้ในเซสชันคลาวด์ (claude.ai/code)
+
+ไฟล์ `.mcp.json` ที่ root ของ repo ประกาศ Kinocut เป็น MCP ของโปรเจกต์ เซสชันใหม่ที่เปิด repo นี้จะเห็น `kinocut` ใน `/mcp` และต้องกดอนุมัติเซิร์ฟเวอร์ครั้งแรก
+
+ให้ติดตั้งล่วงหน้าใน setup script ของ environment (เมนู environment บนแถบชื่อเซสชัน → Edit) เพื่อไม่ให้เปิดช้าหรือ timeout:
+
+```bash
+uvx kinocut==1.16.5 --version
+```
+
+หมายเหตุ: ปลั๊กอิน `thai-academic-skills` ใช้ root ของ repo เป็นโฟลเดอร์ปลั๊กอิน จึงโหลด `.mcp.json` นี้ไปด้วย ผู้ที่ติดตั้งปลั๊กอินนั้นจะได้ Kinocut มาด้วย
+
 ## โครงสร้าง
 
 ```
