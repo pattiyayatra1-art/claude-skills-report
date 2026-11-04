@@ -10,9 +10,13 @@
       "description": "Thai academic research report writing skills for Claude Code"
     },
     {
-      "name": "video-editing",
-      "source": "./plugins/video-editing",
-      "description": "Free local video editing (Kinocut MCP: trim, merge, subtitles, audio) — needs uv + FFmpeg"
+      "name": "kinocut",
+      "source": {
+        "source": "git-subdir",
+        "url": "https://github.com/KyaniteLabs/kinocut.git",
+        "path": "plugins/kinocut"
+      },
+      "description": "Official Kinocut plugin: free local FFmpeg video editing MCP server plus kinocut and kinocut-repurpose skills (Apache-2.0). Needs uv + FFmpeg"
     }
   ]
 }
