@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>เช็กก่อนออกบ้าน | พยากรณ์อากาศและเฝ้าระวังน้ำท่วม</title>
+  <meta name="description" content="พยากรณ์อากาศ ระดับน้ำ ความเสี่ยงน้ำท่วม ฝุ่น PM2.5 และดัชนี UV แบบเรียลไทม์ตามพื้นที่ จากแหล่งข้อมูลที่น่าเชื่อถือ">
+  <meta name="theme-color" content="#0b5cab">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">ข้ามไปเนื้อหาหลัก</a>
+
+  <header class="site-header">
+    <div class="wrap header-inner">
+      <div class="brand">
+        <span class="brand-icon" aria-hidden="true">🌦️</span>
+        <div>
+          <h1>เช็กก่อนออกบ้าน</h1>
+          <p class="tagline">พยากรณ์อากาศ · ระดับน้ำ · ฝุ่น · UV แบบเรียลไทม์</p>
+        </div>
+      </div>
+
+      <form class="search" id="search-form" role="search">
+        <label for="search-input" class="visually-hidden">ค้นหาพื้นที่</label>
+        <input id="search-input" type="search" placeholder="ค้นหาจังหวัด อำเภอ หรือเมือง เช่น Hat Yai" autocomplete="off">
+        <button type="submit" class="btn">ค้นหา</button>
+        <button type="button" class="btn btn-outline" id="geo-btn">📍 ตำแหน่งของฉัน</button>
+        <ul id="search-results" class="search-results" hidden></ul>
+      </form>
+
+      <div class="quick-places" aria-label="พื้นที่ยอดนิยม">
+        <span>เลือกด่วน:</span>
+        <div id="quick-places"></div>
+      </div>
+    </div>
+  </header>
+
+  <main id="main" class="wrap">
+    <div class="location-bar">
+      <div>
+        <h2 id="place-name">กำลังโหลดพื้นที่…</h2>
+        <p id="place-meta" class="muted"></p>
+      </div>
+      <div class="update-box">
+        <span class="live-dot" aria-hidden="true"></span>
+        <span id="updated-at" class="muted">กำลังดึงข้อมูล…</span>
+        <button type="button" class="btn btn-small btn-outline" id="refresh-btn">รีเฟรช</button>
+      </div>
+    </div>
+
+    <div id="alerts" class="alerts" role="alert" aria-live="polite"></div>
+
+    <!-- สรุปก่อนออกบ้าน -->
+    <section class="card verdict" aria-labelledby="verdict-title">
+      <h2 id="verdict-title">สรุปก่อนออกจากบ้าน</h2>
+      <p id="verdict-text" class="verdict-text">กำลังวิเคราะห์…</p>
+      <ul id="checklist" class="checklist"></ul>
+    </section>
+
+    <!-- สภาพอากาศตอนนี้ -->
+    <section class="grid" aria-label="สภาพอากาศปัจจุบัน">
+      <article class="card" id="card-now">
+        <h3>อากาศตอนนี้</h3>
+        <div class="now">
+          <span id="now-icon" class="now-icon" aria-hidden="true">–</span>
+          <div>
+            <div id="now-temp" class="big">–</div>
+            <div id="now-desc">–</div>
+          </div>
+        </div>
+        <dl class="stats">
+          <div><dt>รู้สึกเหมือน</dt><dd id="now-feels">–</dd></div>
+          <div><dt>ความชื้น</dt><dd id="now-hum">–</dd></div>
+          <div><dt>ลม / ลมกระโชก</dt><dd id="now-wind">–</dd></div>
+          <div><dt>ทัศนวิสัย</dt><dd id="now-vis">–</dd></div>
+        </dl>
+        <p id="heat-note" class="note"></p>
+      </article>
+
+      <article class="card" id="card-rain">
+        <h3>ฝน 12 ชั่วโมงข้างหน้า</h3>
+        <div id="rain-chart" class="chart" role="img" aria-label="กราฟโอกาสฝนรายชั่วโมง"></div>
+        <p id="rain-summary" class="note"></p>
+      </article>
+
+      <article class="card" id="card-air">
+        <h3>คุณภาพอากาศ (PM2.5)</h3>
+        <div id="air-badge" class="level-badge">–</div>
+        <dl class="stats">
+          <div><dt>PM2.5</dt><dd id="air-pm25">–</dd></div>
+          <div><dt>PM10</dt><dd id="air-pm10">–</dd></div>
+          <div><dt>US AQI</dt><dd id="air-aqi">–</dd></div>
+        </dl>
+        <p id="air-note" class="note"></p>
+      </article>
+
+      <article class="card" id="card-uv">
+        <h3>แดดและรังสี UV</h3>
+        <div id="uv-badge" class="level-badge">–</div>
+        <dl class="stats">
+          <div><dt>UV ตอนนี้</dt><dd id="uv-now">–</dd></div>
+          <div><dt>UV สูงสุดวันนี้</dt><dd id="uv-max">–</dd></div>
+          <div><dt>พระอาทิตย์ขึ้น</dt><dd id="sunrise">–</dd></div>
+          <div><dt>พระอาทิตย์ตก</dt><dd id="sunset">–</dd></div>
+        </dl>
+        <p id="uv-note" class="note"></p>
+      </article>
+    </section>
+
+    <!-- น้ำท่วม -->
+    <section class="card flood" aria-labelledby="flood-title">
+      <div class="section-head">
+        <h2 id="flood-title">สถานการณ์น้ำและความเสี่ยงน้ำท่วม</h2>
+        <div id="flood-badge" class="level-badge">–</div>
+      </div>
+      <ul id="flood-reasons" class="reasons"></ul>
+
+      <div class="flood-grid">
+        <div>
+          <h3>ปริมาณฝนสะสม</h3>
+          <dl class="stats stats-row">
+            <div><dt>72 ชม. ที่ผ่านมา</dt><dd id="rain-past72">–</dd></div>
+            <div><dt>24 ชม. ข้างหน้า</dt><dd id="rain-next24">–</dd></div>
+            <div><dt>7 วันข้างหน้า</dt><dd id="rain-next7d">–</dd></div>
+          </dl>
+
+          <h3>ปริมาณน้ำในลำน้ำใกล้เคียง (แบบจำลอง GloFAS)</h3>
+          <div id="river-chart" class="chart" role="img" aria-label="กราฟปริมาณน้ำในลำน้ำ"></div>
+          <p id="river-note" class="note"></p>
+        </div>
+
+        <div>
+          <h3>ระดับน้ำจากสถานีวัดใกล้คุณ</h3>
+          <div id="stations" class="stations">
+            <p class="muted">กำลังดึงข้อมูลสถานีโทรมาตร…</p>
+          </div>
+        </div>
+      </div>
+
+      <div id="map" class="map" aria-label="แผนที่สถานีวัดระดับน้ำใกล้เคียง"></div>
+      <p class="note">
+        สีหมุดบนแผนที่: <span class="dot s-low"></span> น้ำน้อย
+        <span class="dot s-normal"></span> ปกติ
+        <span class="dot s-high"></span> น้ำมาก (เฝ้าระวัง)
+        <span class="dot s-over"></span> ล้นตลิ่ง
+      </p>
+    </section>
+
+    <!-- พยากรณ์ 7 วัน -->
+    <section class="card" aria-labelledby="daily-title">
+      <h2 id="daily-title">พยากรณ์ 7 วัน</h2>
+      <div id="daily" class="daily"></div>
+    </section>
+
+    <!-- เบอร์ฉุกเฉินและแหล่งข้อมูลทางการ -->
+    <section class="grid grid-2">
+      <article class="card">
+        <h2>เบอร์ฉุกเฉิน</h2>
+        <ul class="hotlines">
+          <li><a href="tel:1784"><strong>1784</strong></a> กรมป้องกันและบรรเทาสาธารณภัย (ปภ.)</li>
+          <li><a href="tel:1669"><strong>1669</strong></a> เจ็บป่วยฉุกเฉิน (สพฉ.)</li>
+          <li><a href="tel:191"><strong>191</strong></a> แจ้งเหตุด่วนเหตุร้าย (ตำรวจ)</li>
+          <li><a href="tel:199"><strong>199</strong></a> ดับเพลิงและกู้ภัย</li>
+          <li><a href="tel:1182"><strong>1182</strong></a> กรมอุตุนิยมวิทยา</li>
+          <li><a href="tel:1460"><strong>1460</strong></a> กรมชลประทาน</li>
+        </ul>
+      </article>
+      <article class="card">
+        <h2>ตรวจสอบประกาศทางการ</h2>
+        <ul class="links">
+          <li><a href="https://www.tmd.go.th/" target="_blank" rel="noopener">กรมอุตุนิยมวิทยา: ประกาศเตือนภัย พายุ ฝนตกหนัก</a></li>
+          <li><a href="https://www.thaiwater.net/" target="_blank" rel="noopener">ThaiWater (สสน.): ระดับน้ำ เขื่อน สถานการณ์น้ำ</a></li>
+          <li><a href="https://flood.gistda.or.th/" target="_blank" rel="noopener">GISTDA: แผนที่พื้นที่น้ำท่วมจากดาวเทียม</a></li>
+          <li><a href="https://www.disaster.go.th/" target="_blank" rel="noopener">ปภ.: ประกาศพื้นที่ประสบภัย</a></li>
+          <li><a href="https://air4thai.pcd.go.th/" target="_blank" rel="noopener">Air4Thai (กรมควบคุมมลพิษ): คุณภาพอากาศ</a></li>
+        </ul>
+      </article>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <p><strong>แหล่งข้อมูล:</strong>
+        พยากรณ์อากาศ คุณภาพอากาศ และปริมาณน้ำในลำน้ำจาก <a href="https://open-meteo.com/" target="_blank" rel="noopener">Open-Meteo</a>
+        (รวมแบบจำลองจากหน่วยงานอุตุนิยมวิทยาหลายประเทศ, CAMS และ GloFAS ของ Copernicus) ·
+        ระดับน้ำจากสถานีโทรมาตรของ <a href="https://www.thaiwater.net/" target="_blank" rel="noopener">คลังข้อมูลน้ำแห่งชาติ (สสน.)</a>
+      </p>
+      <p class="muted">ข้อมูลอัปเดตอัตโนมัติทุก 10 นาที ค่าความเสี่ยงน้ำท่วมเป็นการประเมินจากข้อมูลฝนและระดับน้ำ ไม่ใช่การวัดความลึกน้ำบนถนนโดยตรง
+        เมื่อมีประกาศจากหน่วยงานราชการ ให้ยึดประกาศทางการเป็นหลัก</p>
+    </div>
+  </footer>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js" defer></script>
+  <script src="js/app.js" defer></script>
+</body>
+</html>
