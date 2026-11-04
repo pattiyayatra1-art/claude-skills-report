@@ -5,9 +5,16 @@
         "source": "github",
         "repo": "heygen-com/hyperframes"
       }
+    },
+    "pattiyayatra-skills": {
+      "source": {
+        "source": "github",
+        "repo": "pattiyayatra1-art/claude-skills-report"
+      }
     }
   },
   "enabledPlugins": {
-    "hyperframes@hyperframes": true
+    "hyperframes@hyperframes": true,
+    "kinocut@pattiyayatra-skills": true
   }
 }
