@@ -49,25 +49,47 @@ repo นี้เป็น private ต้องล็อกอิน GitHub ใ�
 
 ## ปลั๊กอินตัดต่อวิดีโอ (ฟรี)
 
-ปลั๊กอิน `video-editing` ติดตั้ง MCP [Kinocut](https://github.com/KyaniteLabs/kinocut) ซึ่งเป็นโอเพนซอร์ส (Apache-2.0) ทำงานบนเครื่องด้วย FFmpeg ไม่ต้องสมัครบัญชีหรือใช้ API key ใช้ตัด รวมคลิป ใส่ซับไตเติล และปรับเสียง/สี
+| ปลั๊กอิน | มาจาก | ได้อะไร |
+|---|---|---|
+| `kinocut@pattiyayatra-skills` | [Kinocut](https://github.com/KyaniteLabs/kinocut) (Apache-2.0) ปลั๊กอินทางการ | MCP ตัดต่อด้วย FFmpeg (ตัด รวม ใส่ข้อความ/ซับ เปลี่ยนขนาด ปรับเสียง ตรวจคุณภาพ ทำคลิปสั้น) + สกิล `kinocut`, `kinocut-repurpose` |
+| `hyperframes@hyperframes` | [HyperFrames](https://github.com/heygen-com/hyperframes) (Apache-2.0) marketplace ทางการของ HeyGen | สกิลสร้างวิดีโอจาก HTML/CSS/แอนิเมชัน แล้ว render เป็น MP4 (motion graphics, caption, overlay, transition) |
 
-ต้องมีในเครื่อง: [uv](https://docs.astral.sh/uv/) และ FFmpeg (รวม ffprobe)
+ไม่ต้องสมัครบัญชีหรือใช้ API key
+
+ต้องมีในเครื่อง: [uv](https://docs.astral.sh/uv/), FFmpeg (รวม ffprobe) และ Node.js 22+ (สำหรับ HyperFrames)
+
+### เปิดโปรเจกต์นี้ใน Claude Code
+
+`.claude/settings.json` ประกาศทั้งสองปลั๊กอินไว้แล้ว เปิดโฟลเดอร์นี้ใน Claude Code (Desktop หรือ terminal) แล้วยอมรับการติดตั้งที่ขึ้นมา
+
+### ติดตั้งให้ใช้ได้ทุกโปรเจกต์ (ในเครื่อง)
+
+ใน terminal:
 
 ```
-/plugin marketplace update pattiyayatra-skills
-/plugin install video-editing@pattiyayatra-skills
+claude plugin marketplace add pattiyayatra1-art/claude-skills-report
+claude plugin install kinocut@pattiyayatra-skills
+claude plugin marketplace add heygen-com/hyperframes
+claude plugin install hyperframes@hyperframes
 ```
 
-ตรวจความพร้อมด้วย `uvx kinocut==1.16.5 doctor` (เปิดครั้งแรกจะดาวน์โหลดแพ็กเกจจาก PyPI)
+ตรวจความพร้อม: `uvx kinocut==1.16.5 doctor` (ครั้งแรกจะดาวน์โหลดแพ็กเกจจาก PyPI)
 
-ใช้ได้ใน Claude Code และ Claude Desktop เท่านั้น เพราะเป็น MCP ที่รันบนเครื่อง จึงใช้ในหน้าเว็บ claude.ai ไม่ได้
+### เซสชันคลาวด์ (claude.ai/code)
+
+ใส่บรรทัดนี้ใน setup script ของ environment (เมนู environment บนแถบชื่อเซสชัน → Edit) เพื่อโหลด Kinocut ไว้ก่อน ไม่ให้เปิดช้าจน timeout:
+
+```bash
+uvx kinocut==1.16.5 --version
+```
 
 ## โครงสร้าง
 
 ```
 .claude-plugin/
   plugin.json
-  marketplace.json
+  marketplace.json      thai-academic-skills + kinocut (ดึงจาก repo ของ Kinocut)
+.claude/settings.json   เปิดใช้ kinocut และ hyperframes เมื่อเปิดโปรเจกต์นี้
 skills/research-report-writer/
   SKILL.md
   references/
