@@ -3,7 +3,7 @@ name: "research-report-writer"
 description: "Write full academic research reports in Thai (.docx) with verified real citations; for general academic reports (รายงานวิชาการ) use the separate non-research structure."
 ---
 
-# Research Report Writer (v2.2)
+# Research Report Writer (v2.3)
 
 Produces a full academic research report as a `.docx` file, in Thai, structured to the
 convention Thai universities expect. It layers research content, method, and citation
@@ -102,9 +102,18 @@ short Thai message and wait for the answer.
 | ชื่ออาจารย์ผู้สอน (พร้อมคำนำหน้า/ตำแหน่ง) | Ask | Never invent titles such as ดร. or ผศ. |
 | ภาคเรียน และปีการศึกษา | Ask | Do not infer from today's date |
 | สาขา / คณะ | Confirm | |
-| มหาวิทยาลัย และตรามหาวิทยาลัย | Confirm university; **ask for the seal file** | Ask the user to attach the logo (PNG, transparent background preferred). If none is attached, try the download in `model-build-pipeline.md`; if that fails, say so before building, never after |
-| รูปแบบปก/แม่แบบของผู้สอน | Ask once | If the instructor gave a template, it overrides the model layout |
+| มหาวิทยาลัย และตรามหาวิทยาลัย | Confirm university; **find the seal yourself, then confirm** | Do not ask the user to supply the seal (user instruction, 12 Nov 2026). Download the official seal from the university's own site (RMUTP: see `model-build-pipeline.md`). If the sandbox proxy blocks the host, request that exact host through the environment tools (`update_environment`/`create_environment`), then retry. Send the downloaded image to the user and ask "ใช่ตรานี้ไหม" **before** inserting it. Never draw, trace or generate a seal |
+| รูปแบบปก/แม่แบบของผู้สอน | Ask once | If the instructor gave a template, it overrides the model layout. If there is no course (e.g. a test or self-study report), drop the รายวิชา/เสนอ lines instead of leaving dotted blanks |
+| การอ้างอิงในเนื้อหา | Ask | Two options: (a) APA in-text citations (ผู้แต่ง, ปี) plus บรรณานุกรม (standard academic practice), or (b) **no in-text citations**: บรรณานุกรม at the end only, with the "ที่มา:" lines under tables and figures kept. This user chose (b) on 12 Nov 2026. Mention once that many courses require (a) |
 | ความยาว และรูปแบบการอ้างอิง | Ask only if the brief is silent | Defaults in the table above |
+
+**No in-text citation mode (option b).** Write facts as plain statements. Where a
+sentence's subject was a researcher ("Wang et al. (2024) พบว่า…"), describe the work instead
+("งานสำรวจที่สังเคราะห์งานวิจัยด้าน … พบว่า…", "การศึกษาภาคสนามกับพนักงาน 5,172 คน…"),
+or refer back to the section that introduced it ("ตามที่อธิบายไว้ในหัวข้อ 3.3").
+Organisations whose framework *is* the topic (NIST, OWASP, สพธอ., สคส.) may still be named
+as subjects. Every bibliography entry must still be used somewhere in the content. Keep the
+source log from Step 3 so the user can switch back to option (a).
 
 Only items the user explicitly says to leave blank (e.g. "ยังไม่รู้ชื่ออาจารย์ ใส่ทีหลัง")
 may stay as blanks; list them again in the hand-off message. Write the answers into
@@ -199,7 +208,9 @@ pending data. Say which you did.
 
 ## Step 5 — Citations
 
-Read `references/citation-styles.md` before writing citations.
+Read `references/citation-styles.md` before writing citations. If the user chose the
+no in-text citation mode in Step 1a, the rules below still apply to the source log,
+the บรรณานุกรม and the "ที่มา:" notes. Only the in-text (ผู้แต่ง, ปี) markers are dropped.
 
 - Every citation must trace to a source verified in Step 3. Never invent sources, page
   numbers, DOIs, or quotes. If a claim can't be backed, soften it, ask the user for a

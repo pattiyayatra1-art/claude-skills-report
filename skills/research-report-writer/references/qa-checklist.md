@@ -30,6 +30,9 @@ and wasn't fixed.
 - [ ] Limitations stated honestly.
 - [ ] Word count of main body is within the requested length.
 
+- [ ] Formal register: in the body, "แค่", "ถ้า", "ลองนึก" and "คุณ" (meaning the reader) count 0.
+- [ ] Citation mode matches the Step 1a answer: either in-text (ผู้แต่ง, ปี) or none.
+      In the no-citation mode, the body has no "(ปี)" or ", ปี)" outside the "ที่มา:" notes.
 - [ ] Readability pass ("สำนวนที่ไม่แข็ง" in `user-academic-writing-style.md`): each
       content chapter has a concrete scenario/example; few paragraphs open with an
       author name; group-author names abbreviated after first use; bullets ≤ half the
