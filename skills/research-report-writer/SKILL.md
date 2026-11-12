@@ -1,26 +1,37 @@
 ---
-name: research-report-writer
-description: >
-  Write full academic research reports in Thai (.docx) — covering any discipline, not
-  just business/finance — with proper structure (abstract, introduction, literature
-  review, methodology, results, discussion, conclusion, references) formatted as a
-  polished Word document. Always searches for and cites real, verified international
-  and Thai published research — never fabricated or placeholder sources. Also handles
-  the inputs a report is built from: survey/Excel data, interview transcripts, and PDF
-  papers the user supplies. Use whenever the user asks for a "งานวิจัย", "รายงานวิจัย",
-  "รายงานวิชาการ", "research paper", "research report", a thesis/project chapter
-  (บทที่ 1-5), or an academic write-up in Thai, even if they only give a topic. Trigger
-  on partial requests like "ช่วยเขียนงานวิจัยเรื่อง...", "ทำรายงานวิจัยให้หน่อย",
-  "เขียนบทที่ 2 ให้หน่อย", or "สรุปงานวิจัยเป็น Word". Word-document skill only — for a
-  matching presentation deck, point the user to a slide-focused skill instead.
+name: "research-report-writer"
+description: "Write full academic research reports in Thai (.docx) with verified real citations; for general academic reports (รายงานวิชาการ) use the separate non-research structure."
 ---
 
-# Research Report Writer (v2)
+# Research Report Writer (v2.2)
 
 Produces a full academic research report as a `.docx` file, in Thai, structured to the
 convention Thai universities expect. It layers research content, method, and citation
 rules on top of the base Word skill, and pulls in the related skills below when the
 report needs them.
+
+## Routing rule: รายงานวิชาการ ≠ รายงานวิจัย (check FIRST)
+
+Decide the report type before anything else. Never mix the two structures.
+
+| User says | Type | Structure |
+|---|---|---|
+| "รายงานวิชาการ", "รายงานเชิงวิชาการ", term paper, ภาคนิพนธ์ทั่วไป | **General academic report** | Use the structure below. Do NOT use Steps 4's research skeleton. |
+| "งานวิจัย", "รายงานวิจัย", บทที่ 1-5, thesis chapter, has/needs data collection | **Research report** | Steps 1-7 as written |
+
+If the request is ambiguous, ask one short question. If the user only says "รายงานเชิงวิชาการ", it is the general academic report.
+
+**General academic report structure** (source: Siam University and Suan Sunandha guides; full notes in the project doc `claude/academic-report-guide.md` when the session is attached to the นักเขียนรายงาน project):
+
+1. Front: ปกนอก, คำนำ, สารบัญ, สารบัญตาราง/ภาพ (if any). คำนำ = general lead-in to the topic and report, not บทนำ; no apologising or excuses.
+2. บทที่ 1 บทนำ: ความเป็นมาและความสำคัญ (broad to specific) / วัตถุประสงค์ (start with "เพื่อ" + verb, declarative, numbered; count matches the knowledge chapters) / ขอบเขต / วิธีดำเนินการศึกษา (search, analyse, conclude; not a research methodology) / ประโยชน์ที่คาดว่าจะได้รับ / ข้อตกลงเบื้องต้น (terms).
+3. Middle chapters split by topic, one per objective. In each: knowledge or theory, then the author's analysis, then evidence. Separate what sources found from the author's own view.
+4. Final chapter บทสรุป: สรุปผลตามวัตถุประสงค์, อภิปรายผล, ข้อเสนอแนะเพื่อนำไปใช้, ข้อเสนอแนะเพื่อการศึกษาต่อ. Recommendations must follow from the content.
+5. บรรณานุกรม (Thai before English), ภาคผนวก if needed.
+
+**Do NOT include in a general academic report** (research-only parts): บทคัดย่อ/Abstract, ระเบียบวิธีวิจัย (population, sample, instruments), ผลการวิจัย, สมมติฐาน, กรอบแนวคิดการวิจัย, ช่องว่างงานวิจัย (research gap), ข้อจำกัดของการวิจัย. Add one only if the user explicitly asks.
+
+Still apply to both types: Step 1a cover-details question round (before anything else), Step 3 real-source search and verification, Step 5 citation rules, Step 6 build, Step 7 QA. Build with the same tagged file; just use the structure above.
 
 This skill does **not** produce slides. If the user also wants a presentation of the
 same research, finish the report, then hand off to a slide skill.
@@ -72,7 +83,33 @@ user to repeat themselves. Ask only for what is genuinely missing, in one messag
 | Citation style | Optional | APA 7th · IEEE for engineering/CS · Vancouver for medicine/health |
 | Length | Optional | Course report ~2,000-4,000 words of main body; more for thesis chapters |
 | University template / cover format | Optional | Ask for a sample; never guess institutional requirements |
-| Author names, student IDs, course, instructor | Optional | Leave the cover page fields for the user rather than inventing them |
+
+### Step 1a — Ask for the cover and front-matter details BEFORE any research (required)
+
+The user asked for this explicitly: never start searching, outlining or building while
+cover details are unknown, and never ship a cover full of `......` blanks. Before Step 2,
+check every item below against the conversation, attached files and the memory/profile.
+Ask for **all** missing items in **one** question round. Use the `AskUserQuestion` tool when it
+is available (one question per item group, with the profile value as the first option
+marked "(ตามข้อมูลเดิม)" so the user can confirm with one click). Otherwise ask in one
+short Thai message and wait for the answer.
+
+| Item | Ask even if a profile default exists? | Notes |
+|---|---|---|
+| ชื่อ–นามสกุลผู้จัดทำ (และสมาชิกกลุ่ม ถ้าเป็นงานกลุ่ม) | Confirm | Group work changes the cover and คำนำ signature |
+| รหัสนักศึกษา | Confirm | |
+| รายวิชา (ชื่อ และรหัสวิชา ถ้ามี) | Ask | Changes every assignment |
+| ชื่ออาจารย์ผู้สอน (พร้อมคำนำหน้า/ตำแหน่ง) | Ask | Never invent titles such as ดร. or ผศ. |
+| ภาคเรียน และปีการศึกษา | Ask | Do not infer from today's date |
+| สาขา / คณะ | Confirm | |
+| มหาวิทยาลัย และตรามหาวิทยาลัย | Confirm university; **ask for the seal file** | Ask the user to attach the logo (PNG, transparent background preferred). If none is attached, try the download in `model-build-pipeline.md`; if that fails, say so before building, never after |
+| รูปแบบปก/แม่แบบของผู้สอน | Ask once | If the instructor gave a template, it overrides the model layout |
+| ความยาว และรูปแบบการอ้างอิง | Ask only if the brief is silent | Defaults in the table above |
+
+Only items the user explicitly says to leave blank (e.g. "ยังไม่รู้ชื่ออาจารย์ ใส่ทีหลัง")
+may stay as blanks; list them again in the hand-off message. Write the answers into
+the session memory/profile only if the user agrees, so the next report can offer them as
+defaults.
 
 **Thesis-chapter mode.** Thai theses often use the five-chapter layout. If the user
 asks for "บทที่ 1-5" or a single chapter, map it as:
@@ -124,7 +161,9 @@ rather than citing something tangential to fill a slot.
 Keep a source log as you go (authors, year, title, venue, volume/issue/pages,
 DOI/URL, and one line on what it contributes). Steps 5 and 7 are built from this log.
 
-## Step 4 — Structure
+## Step 4 — Structure (research reports only)
+
+> Applies only when the routing rule above says **research report**. For a general academic report use that section's structure instead.
 
 Standard skeleton — adapt names and order to the discipline and to what the user
 already has, but keep this backbone:
@@ -179,10 +218,42 @@ Read `references/citation-styles.md` before writing citations.
 `references/model-build-pipeline.md` — fill `assets/template_model.txt`, run
 `scripts/build_research_docx.ps1` then `scripts/modelfmt.ps1`. This reproduces the
 user-approved model layout (RMUTP seal cover, ก ข ค front matter, navy-header tables,
-Thai/English reference groups). Use the docx-js route below only when Word is not
-available, and tell the user the layout will differ.
+Thai/English reference groups).
 
-**Fallback (no Word):** load the `docx` skill and follow it end to end (docx-js build, gotchas, page setup,
+**No Word (Linux, the Claude API / code-execution container, macOS, phone):** build the
+same model layout from the same tagged file with Node.js — no Word, no npm packages:
+
+```bash
+node scripts/build_research_docx.js report.txt "รายงาน_<หัวข้อสั้น>.docx"
+```
+
+- Write the tagged file exactly as for the Word route (`assets/template_model.txt`,
+  `references/word-tag-format.md`). The script reproduces both Word scripts: cover
+  without page number, ก ข ค front matter, 1 2 3 body, numbers top-right, TH Sarabun New
+  16/20 pt, Thai distributed justify, navy-header banded grid tables, bold caption
+  labels, สารบัญตาราง + สารบัญภาพ on one page.
+- สารบัญ / สารบัญตาราง / สารบัญภาพ come out **without page numbers** (Word fields that
+  Word may or may not refresh on open). A user received a report with an empty สารบัญ
+  this way, so always fill the numbers before delivery:
+  1. Install the real TH Sarabun New (SIPA v1.35) so the page layout matches Word. See
+     "Fonts without Word" in `references/model-build-pipeline.md`. Do **not** use the
+     `font-th-sarabun-new` npm package: its webfont files are scaled wrong (about 1.5× wider),
+     so the page numbers come out wrong.
+  2. Run `python3 scripts/fill_toc_pages.py report.docx report_final.docx`. It renders
+     the file with LibreOffice, finds the page of every heading, table and figure caption,
+     and writes the numbers into the contents lists. It also removes the "update fields?"
+     prompt. The fields stay, so the user can still refresh them after editing.
+  3. Check that the run prints `MISSING []`. Any entry listed there needs a manual look.
+     Then read the contents pages of the rendered PDF.
+- A missing image (e.g. the RMUTP seal when there is no network) is skipped with a
+  WARNING on stderr instead of failing. Try the seal download from
+  `model-build-pipeline.md` first; if it fails, say the seal is missing.
+- Check the run printed `SAVED=`. Render-to-image QA (Step 7) works the same way.
+
+Use the generic docx-js route below only if Node.js is unavailable, and tell the user
+the layout will differ from the model.
+
+**Last resort (no Word, no Node.js):** load the `docx` skill and follow it end to end (docx-js build, gotchas, page setup,
 verification-by-render). Read `references/thai-academic-format.md` for the page and
 font defaults. On top of the base skill:
 
@@ -208,7 +279,11 @@ Run the checklist in `references/qa-checklist.md`. At minimum:
 2. Citation cross-check: every in-text citation resolves to a reference entry, every
    reference entry is cited, author/year match exactly.
 3. Every number in Results matches the computed data from Step 2.
-4. No leftover placeholders (`lorem`, `TODO`, `xxx`, `[insert`, `...`).
+4. No leftover placeholders (`lorem`, `TODO`, `xxx`, `[insert`, `...`), and no dotted
+   blanks on the cover unless the user chose to leave that field blank (Step 1a).
+5. Every สารบัญ / สารบัญตาราง / สารบัญภาพ entry has a page number (Step 6).
+6. Readability pass from `references/user-academic-writing-style.md` → "สำนวนที่ไม่แข็ง":
+   the report must not read stiff (user feedback, 12 Nov 2026).
 
 Then tell the user where the file is, how many verified sources were used, and anything
 left for them: cover-page details, sections marked as needing a source, or data still

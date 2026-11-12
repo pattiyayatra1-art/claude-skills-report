@@ -1,5 +1,7 @@
 # Tagged skeleton for the user's approved RMUTP model layout (see references/model-build-pipeline.md).
 # Replace every {…}. Lines starting with # are ignored by build_research_docx.ps1.
+# Every cover field ({ชื่อรายวิชา}, {อาจารย์ ผู้สอน}, {n}, {ปี}, seal file …) comes from the SKILL.md Step 1a
+# question round. Do not build while any is unknown unless the user chose to leave it blank.
 # ---------------- cover (no page number) ----------------
 [IMG]rmutp_seal.png|3.2
 [C:20:b]รายงาน
