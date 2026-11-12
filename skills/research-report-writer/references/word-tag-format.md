@@ -65,3 +65,19 @@ Inside `[P]`, `[PN]`, `[LI*]`, `[REF]`, `[NOTE]`, `[KW]` and `[C/L/R]` text you 
 | `[LOF]` | สารบัญภาพ: every `[FCAP]` |
 
 Put each of these right after its `[FH]` heading and a `[R:16:b]หน้า` line. They are Word fields that the script updates before saving. If the user edits the document later, right-click → Update Field refreshes them.
+
+## Column widths (Node builder)
+
+`build_research_docx.js` sizes columns from the longest cell in each column. A column
+whose longest cell is at most 24 characters gets a fixed width (`0.24 cm × length + 0.6 cm`,
+capped at 4.5 cm). Longer columns share what is left in proportion to their length. Two
+long columns next to a medium one leave the medium column only about 2.5 cm wide, and
+Thai text then breaks every few characters. Write tables with a short first column
+(`ระดับ`, `ประเด็น`) and balanced text columns, or merge into three columns. Always look
+at the rendered table.
+
+## Contents page numbers
+
+`[TOC]`, `[LOT]` and `[LOF]` produce entries without page numbers. After building, run
+`scripts/fill_toc_pages.py` (see `model-build-pipeline.md`) so the delivered file shows
+real page numbers.

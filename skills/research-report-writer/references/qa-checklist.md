@@ -15,6 +15,12 @@ and wasn't fixed.
 - [ ] Charts are legible at print size, Thai labels render, numbered captions present.
 - [ ] Page numbers present and correct (front matter vs. body).
 
+- [ ] Every สารบัญ / สารบัญตาราง / สารบัญภาพ entry shows a page number, and the
+      numbers match the rendered pages (`fill_toc_pages.py` printed `MISSING []`).
+- [ ] No table column is so narrow that Thai text breaks every few characters.
+- [ ] Cover is complete: seal, author, ID, course, instructor, semester, year (or
+      blanks the user chose to leave, listed in the hand-off).
+
 ## 2. Content completeness
 
 - [ ] Every section from Step 4 present (or deliberately merged/omitted, and the user
@@ -23,6 +29,14 @@ and wasn't fixed.
 - [ ] Each research objective is answered in Results and discussed in Discussion.
 - [ ] Limitations stated honestly.
 - [ ] Word count of main body is within the requested length.
+
+- [ ] Formal register: in the body, "แค่", "ถ้า", "ลองนึก" and "คุณ" (meaning the reader) count 0.
+- [ ] Citation mode matches the Step 1a answer: either in-text (ผู้แต่ง, ปี) or none.
+      In the no-citation mode, the body has no "(ปี)" or ", ปี)" outside the "ที่มา:" notes.
+- [ ] Readability pass ("สำนวนที่ไม่แข็ง" in `user-academic-writing-style.md`): each
+      content chapter has a concrete scenario/example; few paragraphs open with an
+      author name; group-author names abbreviated after first use; bullets ≤ half the
+      paragraph count.
 
 ## 3. Integrity
 
