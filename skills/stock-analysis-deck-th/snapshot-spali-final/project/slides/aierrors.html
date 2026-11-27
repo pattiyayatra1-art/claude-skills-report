@@ -1,0 +1,30 @@
+<section id="aierrors" data-transition="fade">
+<div class="hd">
+<p class="tag" style="background:#1E3A5F; color:#F3F1EC">SUPPORT 3 · COMMON AI ERRORS</p>
+<h2 class="title">AI ผิดใน 3 รูปแบบ: สับสนข้อมูล ปนนิยาม และขาดบริบท</h2>
+<p class="sub">ตัวอย่างจริงจากงาน SPALI และวิธีป้องกันที่ทีมใช้</p>
+</div>
+<div class="a1" style="display:flex; gap:20px; align-items:stretch">
+<div class="card" style="flex:1; padding:0; gap:0; overflow:hidden">
+<div style="background:#1E3A5F; padding:22px 26px; display:flex; align-items:center; gap:14px; color:#F3F1EC"><div class="ic light"><x-icon name="Database"></x-icon></div><div><p class="txt" style="font-weight:600">Data Confusion</p><p class="lbl onm">สับสนข้อมูล</p></div></div>
+<div style="padding:22px 26px; display:flex; flex-direction:column; gap:12px"><p class="txt">ใช้งบเฉพาะกิจการแทนงบรวม จึงสรุปว่ากำไร −41%</p><p class="txt">ปนตัวเลขปีกับไตรมาส</p><p class="lbl b" style="font-weight:600">ป้องกัน: ระบุ “งบรวม” และช่วงเวลาใน prompt</p></div>
+</div>
+<div class="card" style="flex:1; padding:0; gap:0; overflow:hidden">
+<div style="background:#2E5B92; padding:22px 26px; display:flex; align-items:center; gap:14px; color:#F3F1EC"><div class="ic light"><x-icon name="Book"></x-icon></div><div><p class="txt" style="font-weight:600">Definition Error</p><p class="lbl onm">ปนนิยาม · ฐานต่างกัน</p></div></div>
+<div style="padding:22px 26px; display:flex; flex-direction:column; gap:12px"><p class="txt">ใช้ EPS 1.47 และ Sales 5,186 จากแหล่งที่นิยามต่าง</p><p class="txt">MD&amp;A รายงาน EPS 1.52</p><p class="lbl b" style="font-weight:600">ป้องกัน: ให้ AI อ้างเอกสารและหน้า</p></div>
+</div>
+<div class="card" style="flex:1; padding:0; gap:0; overflow:hidden">
+<div style="background:#3566A3; padding:22px 26px; display:flex; align-items:center; gap:14px; color:#F3F1EC"><div class="ic light"><x-icon name="Globe"></x-icon></div><div><p class="txt" style="font-weight:600">Context Missing</p><p class="lbl onm">ขาดบริบทอุตสาหกรรม</p></div></div>
+<div style="padding:22px 26px; display:flex; flex-direction:column; gap:12px"><p class="txt">ใช้เกณฑ์ Current ratio ทั่วไป ไม่ดูว่าสินทรัพย์คือต้นทุนโครงการ</p><p class="txt">ตีความ OCF ติดลบว่าธุรกิจล้มเหลว</p><p class="lbl b" style="font-weight:600">ป้องกัน: ใส่ลักษณะธุรกิจอสังหาฯ ใน prompt</p></div>
+</div>
+</div>
+<div class="card deep a2" style="flex-direction:row; align-items:center; gap:20px; padding:20px 28px">
+<div class="ic light"><x-icon name="Lightbulb"></x-icon></div>
+<p class="txt">“Use AI for analytical acceleration, not analytical substitution” — AI ช่วยให้เร็วขึ้น แต่คนต้องตรวจและตัดสินใจ</p>
+</div>
+<p class="src">ที่มา: Common AI Errors (Workshop 2) · ตัวอย่างจากการตรวจของผู้จัดทำ · MD&amp;A 3Q26 · FS FY2025</p>
+<div class="pg"></div>
+<aside>บทพูด: หลักฐานสนับสนุนสไลด์ที่สาม เมื่อย้อนดูว่า AI ผิดเพราะอะไร พบสามรูปแบบตามที่ Workshop เตือนไว้ แบบแรกสับสนข้อมูล เช่น ใช้งบเฉพาะกิจการแทนงบรวมจนสรุปว่ากำไรลด 41% ทั้งที่งบรวมโต 7.6% แบบที่สองปนนิยาม เช่น ใช้ EPS 1.47 จากแหล่งที่ใช้ฐานหุ้นต่าง ขณะที่ MD&amp;A รายงาน 1.52 แบบที่สามขาดบริบท เช่น ใช้เกณฑ์ Current ratio ทั่วไปโดยไม่รู้ว่าสินทรัพย์หมุนเวียน 94% คือต้นทุนโครงการ และมองว่า OCF ติดลบคือธุรกิจล้มเหลว ทั้งที่เป็นลักษณะปกติของช่วงลงทุนในโครงการ วิธีป้องกันคือระบุงบ ช่วงเวลา และบริบทธุรกิจในคำสั่ง แล้วให้ AI อ้างเอกสารทุกครั้ง
+
+รายละเอียด: งบเฉพาะกิจการ 9M26 กำไร 1,543.8 รวมเงินปันผลรับจากบริษัทย่อยที่ไม่สม่ำเสมอ · MD&amp;A EPS 1.52 รายได้รวม 3Q26 5,420.6 · InnovestX ใช้ฐานหุ้นต่างและ Sales = ขายอสังหาฯ + ค่าเช่า · ต้นทุนโครงการเพิ่ม +3,516 (2024) และ +2,806 (2025) · คำพูดในกรอบล่างมาจากสไลด์ 5 บทบาท AI ของ Workshop 2</aside>
+</section>

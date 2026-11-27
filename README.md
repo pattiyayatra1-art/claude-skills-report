@@ -7,6 +7,7 @@
 | สกิล | หน้าที่ |
 |---|---|
 | `research-report-writer` (v2.3) | เขียนรายงานวิชาการ / รายงานวิจัย / บทที่ 1-5 เป็นภาษาไทย อ้างอิงแหล่งจริงที่ตรวจสอบแล้ว และสร้างไฟล์ตามรูปแบบต้นแบบที่ผู้ใช้ยืนยันแล้ว |
+| `stock-analysis-deck-th` (v1.0) | ทำสไลด์วิเคราะห์หุ้นไทยจากงบ 5 ปี (ROE/DuPont หนี้ เงินสด เทียบคู่แข่ง มูลค่า AI Audit) เป็น Claude Slides / เว็บ / PPTX / PDF บทพูด · ตัวอย่าง SPALI |
 
 ## รูปแบบรายงานต้นแบบ (v2.1)
 
@@ -104,6 +105,12 @@ uvx kinocut==1.16.5 --version
   plugin.json
   marketplace.json      thai-academic-skills + kinocut (ดึงจาก repo ของ Kinocut)
 .claude/settings.json   เปิดใช้ kinocut และ hyperframes เมื่อเปิดโปรเจกต์นี้
+skills/stock-analysis-deck-th/
+  SKILL.md                          สร้างสไลด์วิเคราะห์หุ้นไทยจากงบ 5 ปี (ตัวอย่าง SPALI)
+  scripts/                          gen4.py post.py pvx.js mkweb.py mkpptx.js outline2.py mk.js mkicons.js
+  templates/                        deck.css deck.json cover.html thanks.html
+  references/                       data-and-verification.md · example-storyboard-spali.md
+  snapshot-spali-final/             สำเนาสไลด์ SPALI 17 หน้า (กู้คืนได้)
 skills/research-report-writer/
   SKILL.md
   references/

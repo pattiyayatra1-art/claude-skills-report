@@ -1,7 +1,7 @@
 {
   "name": "thai-academic-skills",
-  "version": "2.3.0",
-  "description": "Thai academic research report writing skills for Claude Code",
+  "version": "2.4.0",
+  "description": "Thai academic report writing and stock-analysis deck skills for Claude Code",
   "author": {
     "name": "pattiyayatra1"
   }
